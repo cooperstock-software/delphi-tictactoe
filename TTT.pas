@@ -107,7 +107,8 @@ begin
          text.Font.Style := [fsBold];
          text.Caption := '';
          text.Tag := (row - 1) * 3 + col;
-         text.Transparent := true;
+         text.Color := clWhite;
+         text.Transparent := false; // this defaults to true, if not set to false the color is ignored!
          text.OnClick := CellClick; // if convert to Lazarus, need @CellClick according to Claude
          cells[row, col] := text;
       end;
@@ -148,6 +149,7 @@ begin
    // Record the player's click
    cell.Caption := if playMethod <> mTwoPlayer then playerLetter
    					 else if nextPlay mod 2 = 1 then 'X' else 'O';
+   cell.Transparent := true;
    move := if cell.Caption = 'X' then mX else mO;
    board[row, col] := move;
 
@@ -163,6 +165,7 @@ begin
          FillBoard;
          ChooseMove(board, computerMove, row, col);
          cells[row, col].Caption := computerLetter;
+		   cells[row, col].Transparent := true;
          board[row, col] := computerMove;
          SetPlayCaption(playerLetter);
          Inc(nextPlay);
@@ -308,6 +311,7 @@ begin
             	3: begin row := 3; col := 3; end;
             end;
             cells[row, col].Caption := computerLetter;
+			   cells[row, col].Transparent := true;
             board[row, col] := computerMove;
             SetPlayCaption('O');
             Inc(nextPlay);
@@ -375,7 +379,10 @@ begin
    
    for row := 1 to 3 do
       for col := 1 to 3 do
+      begin
          cells[row, col].Caption := '';
+         cells[row, col].transparent := false;
+      end;
    FillBoard;
 end;
 
